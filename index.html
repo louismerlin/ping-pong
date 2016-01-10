@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>ping pong</title>
+</head>
+
+<body>
+
+  <button id="ping" onclick="sendping()" disabled>ping</button>
+  <p id="pong" style="visibility:hidden">pong</p>
+
+  <script>
+
+    var ws = new WebSocket("ws://localhost:8123"),
+        ping = document.getElementById("ping"),
+        pong = document.getElementById("pong");
+
+    ws.onopen = function(ev) {
+      console.log('Connection opened.');
+      ping.disabled = false;
+    }
+    ws.onclose = function(ev) {
+      console.log('Connection closed.');
+      ping.disabled = true;
+    }
+    ws.onerror = function(ev) {
+      console.log('Are you sure you started the server ?');
+    }
+    ws.onmessage = function(event) {
+
+      console.log("Received " + event.data);
+
+      if (event.data == "pong") {
+        pong.style.visibility = "visible";
+        setTimeout( function() {pong.style.visibility = "hidden"}, 500);
+      }
+    }
+
+    function sendping() {
+      ws.send("ping")
+    }
+  </script>
+</body>
+
+</html>
