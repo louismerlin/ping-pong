@@ -8,4 +8,4 @@ You can then run the server with a simple
 
 `ruby server.rb`
 
-All you have to do now is to open the *index.html* file with you favorite web browser !
+All you have to do now is to open the *index.html* file with you favorite web browser. Try opening multiple windows of the *index.html* and draw on any of them !
