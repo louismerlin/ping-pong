@@ -1,9 +1,9 @@
 require 'em-websocket'
 
-puts "Server Running !"
+puts "ping-pong Running !"
 
 EM.run {
-  EM::WebSocket.run(:host => "0.0.0.0", :port => 8123) do |ws|
+  EM::WebSocket.run(:host => "0.0.0.0", :port => 8124) do |ws|
 
     ws.onopen { puts "Connection open" }
     ws.onclose { puts "Connection closed" }

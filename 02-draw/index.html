@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>draw</title>
+</head>
+
+<body>
+
+  <canvas id="canvas" width="512" height="512" style="border:1px solid black"></canvas>
+
+  <script>
+    var ws = new WebSocket("ws://localhost:8124"),
+      canvasCtx = document.getElementById('canvas').getContext('2d'),
+      canvas = document.getElementById('canvas');
+
+    var mouseDown = 0;
+    document.body.onmousedown = function() {
+      ++mouseDown;
+    }
+    document.body.onmouseup = function() {
+      --mouseDown;
+    }
+
+    sendPosition = function(e) {
+      ws.send(e.offsetX + "&" + e.offsetY);
+    }
+
+    canvas.addEventListener("mousemove", function(e) {
+      if (mouseDown)
+        sendPosition(e)
+    })
+
+
+    erase = function(coord) {
+      canvasCtx.fillStyle = 'white';
+      canvasCtx.fillRect(coord[0], coord[1], 1, 1);
+      canvasCtx.fillStyle = 'black';
+    }
+
+
+    ws.onopen = function(ev) {}
+    ws.onclose = function(ev) {}
+    ws.onerror = function(ev) {}
+    ws.onmessage = function(event) {
+      coord = event.data.split("&")
+      canvasCtx.beginPath();
+      canvasCtx.arc(coord[0], coord[1], 5, 0, 2 * Math.PI);
+      canvasCtx.fill();
+    }
+  </script>
+</body>
+
+</html>
